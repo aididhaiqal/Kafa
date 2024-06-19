@@ -21,7 +21,9 @@ export default function Edit({ auth, activity }) {
 
   const submit = (e) => {
     e.preventDefault();
-    put(route("admin.activities.update", activity.id));
+    put(route("admin.activities.update", activity.id, {
+        onSuccess: () => closeModal(),
+    }));
   };
 
   const openModal = () => {

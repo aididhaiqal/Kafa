@@ -1,58 +1,63 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
 use Illuminate\Http\Request;
+use App\Models\Payment;
 use Inertia\Inertia;
+use App\Models\User;
 
 class PaymentController extends Controller
 {
     public function index()
     {
-        $payments = Payment::all();
-        return Inertia::render('Admin/Payments/Index', ['payments' => $payments]);
+        $payments = auth()->user()->role!=='parent'
+            ? Payment::with('parent')->get()
+            : Payment::where('parent_id', auth()->id())->get();
+
+        return Inertia::render('Payments/Index', ['payments' => $payments]);
     }
 
     public function create()
-    {
-        return Inertia::render('Admin/Payments/Create');
+    {  $parents = User::where('role', 'parent')->get(); // Assuming 'role' is a column to distinguish user roles
+        return Inertia::render('Payments/Create', ['parents' => $parents]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric',
-            'date' => 'required|date',
-            'user_id' => 'required|exists:users,id',
+            'parent_id' => 'required|exists:users,id',
+            'payment_method' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:0',
+            'status' => 'required|string|max:255',
         ]);
 
         Payment::create($request->all());
 
-        return redirect()->route('admin.payments.index')->with('success', 'Payment created successfully.');
+        return redirect()->route('payments.index')->with('success', 'Payment created successfully.');
     }
 
     public function edit(Payment $payment)
     {
-        return Inertia::render('Admin/Payments/Edit', ['payment' => $payment]);
+        return Inertia::render('Payments/Edit', ['payment' => $payment]);
     }
 
     public function update(Request $request, Payment $payment)
     {
         $request->validate([
-            'amount' => 'required|numeric',
-            'date' => 'required|date',
-            'user_id' => 'required|exists:users,id',
+            'parent_id' => 'required|exists:users,id',
+            'payment_method' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:0',
+            'status' => 'required|string|max:255',
         ]);
 
         $payment->update($request->all());
 
-        return redirect()->route('admin.payments.index')->with('success', 'Payment updated successfully.');
+        return redirect()->route('payments.index')->with('success', 'Payment updated successfully.');
     }
 
     public function destroy(Payment $payment)
     {
         $payment->delete();
-        return redirect()->route('admin.payments.index')->with('success', 'Payment deleted successfully.');
+        return redirect()->route('payments.index')->with('success', 'Payment deleted successfully.');
     }
 }

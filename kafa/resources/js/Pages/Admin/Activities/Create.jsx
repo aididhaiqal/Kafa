@@ -136,19 +136,6 @@ export default function Create({ auth }) {
             />
             <InputError message={errors.status} className="mt-2" />
           </div>
-
-          <div className="mt-4">
-            <InputLabel htmlFor="details" value="Details" />
-            <TextInput
-              id="details"
-              name="details"
-              value={data.details}
-              className="mt-1 block w-full"
-              onChange={(e) => setData("details", e.target.value)}
-            />
-            <InputError message={errors.details} className="mt-2" />
-          </div>
-
           <div className="flex items-center justify-end mt-4">
             <PrimaryButton className="ms-4" disabled={processing}>
               Add Activity

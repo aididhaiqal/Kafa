@@ -10,14 +10,14 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'parent_id',
+        'payment_method',
         'amount',
-        'date',
-        'user_id',
+        'status',
     ];
 
-    // Define the relationship with the User model
-    public function user()
+    public function parent()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'parent_id');
     }
 }

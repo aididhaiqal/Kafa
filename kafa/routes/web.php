@@ -17,6 +17,9 @@ use App\Http\Controllers\AdminStudentController;
 use App\Http\Controllers\AdminActivityController;
 
 use App\Http\Controllers\TeacherStudentController;
+
+use App\Http\Controllers\PaymentController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -71,6 +74,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
     Route::get('/activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
+
+
+    Route::resource('payments', PaymentController::class);
 });
 
 Route::middleware(['auth', 'can:teacher'])->group(function () {
