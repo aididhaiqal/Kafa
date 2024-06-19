@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState} from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
+import Modal from "@/Components/Modal";
 
 export default function EditParent({ auth, parent }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,9 @@ export default function EditParent({ auth, parent }) {
 
   const submit = (e) => {
     e.preventDefault();
-    put(route("admin.parents.update", parent.id));
+    put(route("admin.parents.update", parent.id), {
+        onSuccess: () => closeModal(),
+    });
   };
 
   return (

@@ -1,6 +1,8 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import RegisterStudent from './Create'
+import Edit from './Edit';
 
 export default function Index({ auth, students }) {
     const handleDelete = (id) => {
@@ -16,6 +18,7 @@ export default function Index({ auth, students }) {
                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="p-6 bg-white border-b border-gray-200">
                         <h2 className="font-semibold text-xl text-gray-800 leading-tight mb-4">Students List</h2>
+                        <RegisterStudent />
                         <div className="flex justify-center">
                             <div className="overflow-x-auto w-full">
                                 <table className="min-w-full divide-y divide-gray-200">
@@ -40,6 +43,7 @@ export default function Index({ auth, students }) {
                                                         <Link href={route('results.show', student.id)} className="text-indigo-600 hover:text-indigo-900">
                                                             View Results
                                                         </Link>
+                                                        <Edit student={student} />
                                                         {auth.user.can_delete_student && (
                                                             <button
                                                                 onClick={() => handleDelete(student.id)}

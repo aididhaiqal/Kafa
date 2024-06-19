@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
-import Edit from '@/Pages/Profile/Edit';
+import Edit from './Edit';
 
 export default function ViewParents({ auth, parents }) {
     const { confirmDelete } = usePage().props;

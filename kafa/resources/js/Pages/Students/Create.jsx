@@ -1,12 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useEffect} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
+import Modal from '@/Components/Modal';
 
 export default function RegisterStudent({ auth }) {
+
+  const [isOpen, setIsOpen] = useState(false);
+
     const { data, setData, post, processing, errors, reset } = useForm({
         student_name: '',
         home_address: '',
@@ -25,8 +29,23 @@ export default function RegisterStudent({ auth }) {
         post(route('students.store'));
     };
 
+    const openModal = () => {
+        setIsOpen(true);
+      };
+
+      const closeModal = () => {
+        setIsOpen(false);
+      };
+
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <>
+        <button
+          onClick={openModal}
+          className="text-indigo-600 hover:text-indigo-900 mb-4 inline-block"
+        >
+          Add Student
+        </button>
+        <Modal show={isOpen} onClose={closeModal}>
             <Head title="Register Student" />
             <form onSubmit={submit}>
                 <div>
@@ -93,6 +112,7 @@ export default function RegisterStudent({ auth }) {
                     </PrimaryButton>
                 </div>
             </form>
-        </AuthenticatedLayout>
+        </Modal>
+        </>
     );
 }
